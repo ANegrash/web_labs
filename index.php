@@ -65,46 +65,55 @@
 		?>
 		<script>
 			//здесь мы не даём пользователю ввести в поле для Y ввести не те данные
-		function onlyDigits() {
-      this.value = this.value.replace(/[^\d\,\-]/g, "");//разрешаем ввод только цифр 0-9, запятой и минуса
+			function onlyDigits() {
+      				this.value = this.value.replace(/[^\d\,\-]/g, "");//разрешаем ввод только цифр 0-9, запятой и минуса
 
-          if(this.value.lastIndexOf("-")> 0) {//если пользователь вводит тире (минус) не самым первым символом...
-            this.value = this.value.substr(0, this.value.lastIndexOf("-"));//то удаляем этот минус
-          }
+          			if(this.value.lastIndexOf("-")> 0) {//если пользователь вводит тире (минус) не самым первым символом...
+            				this.value = this.value.substr(0, this.value.lastIndexOf("-"));//то удаляем этот минус
+          			}
       
-        if(this.value[0]== "-") {//если первый символ это минус (число отрицательно)...
-            if(this.value[1]== "4" || this.value[1]== "5" || this.value[1]== "6" || this.value[1]== "7" || this.value[1]== "8" || this.value[1]== "9"){
-                this.value = this.value.substr(0, 1);//то запрещаем вводить цифры 4,5,6,7,8,9
-            }
-            if(this.value.length>2 && this.value[2]!=",") this.value=this.value[0]+this.value[1]+","+this.value[2];//если третий символ введён и он не запятая, то вставляем запятую между вторым и третим символом
-            if(this.value.length>8) this.value = this.value.substr(0, 8);//если количество символов равно 8 (5 знаков после запятой), не даём вводить больше
-        }else{//если число положительно (первым введён не минус, а цифра)...
-            if(this.value[0]== "6" || this.value[0]== "7" || this.value[0]== "8" || this.value[0]== "9"){
-                this.value = this.value.substr(0, 0);//то эта цифра должна быть от 0 до 5
-            }
-            if(this.value.length>1 && this.value[1]!=",") this.value=this.value[0]+","+this.value[1];//если второй символ введён и он не запятая, то вставляем запятую между первым и вторым символом
-            if(this.value.length>7) this.value = this.value.substr(0, 7);//если количество символов равно 7 (5 знаков после запятой), не даём вводить больше
-        }
+        			if(this.value[0]== "-") {//если первый символ это минус (число отрицательно)...
+            				if(this.value[1]== "4" || this.value[1]== "5" || this.value[1]== "6" || this.value[1]== "7" || this.value[1]== "8" || this.value[1]== "9"){
+                				this.value = this.value.substr(0, 1);//то запрещаем вводить цифры 4,5,6,7,8,9
+            				}
+					if(this.value[1]== "3" && this.value[2]!=""){
+                				this.value = this.value.substr(0, 2);//то запрещаем вводить число больше 0
+            				}
+
+            				if(this.value.length>2 && this.value[2]!=",") this.value=this.value[0]+this.value[1]+","+this.value[2];//если третий символ введён и он не запятая, то вставляем запятую между вторым и третим символом
+            				if(this.value.length>8) this.value = this.value.substr(0, 8);//если количество символов равно 8 (5 знаков после запятой), не даём вводить больше
+        			}else{//если число положительно (первым введён не минус, а цифра)...
+            				if(this.value[0]== "," || this.value[0]== "6" || this.value[0]== "7" || this.value[0]== "8" || this.value[0]== "9"){
+                				this.value = this.value.substr(0, 0);//то эта цифра должна быть от 0 до 5
+            				}
+					if(this.value[0]== "5" && this.value[1]!= ""){
+                				this.value = this.value.substr(0, 1);//то эта цифра должна быть от 0 до 5
+            				}
+
+            				if(this.value.length>1 && this.value[1]!=",") this.value=this.value[0]+","+this.value[1];//если второй символ введён и он не запятая, то вставляем запятую между первым и вторым символом
+            				if(this.value.length>7) this.value = this.value.substr(0, 7);//если количество символов равно 7 (5 знаков после запятой), не даём вводить больше
+        			}
       
-        if(this.value.match(/\,/g).length > 1) {//не даём ввести больше одной запятой
-            this.value = this.value.substr(0, this.value.lastIndexOf(","));
-        }
-        if(this.value.match(/\-/g).length > 1) {//не даём ввести больше одного минуса
-            this.value = this.value.substr(0, 0);
-        }
-    }
+        			if(this.value.match(/\,/g).length > 1) {//не даём ввести больше одной запятой
+            				this.value = this.value.substr(0, 0);
+        			}
+
+        			if(this.value.match(/\-/g).length > 1) {//не даём ввести больше одного минуса
+            				this.value = this.value.substr(0, 0);
+        			}
+    			}
 			//присваиваем данный скрипт нашему полю ввода
-    document.querySelector(".number").onkeyup = onlyDigits
-            //Есть два косяка: если ввести только запятую и отправить - ошибок не будет, и если ввести число 5,99999 (что явно больше 5), то ошибки не будет. Это несложно изменить, но если вы читаете этот коммент, значит у меня прокатило и я не исправлял)
-            //а не сделал, потому что лень)
-			//следующие строчки я скопипастил со stackoverflow и они не дают выбирать больше одного checkbox-а. Работает - не трогай
-            var inputs = document.getElementsByName("coordX");
-            for(var i = 0; i < inputs.length; i++) inputs[i].onchange = checkboxHandler;
+    			document.querySelector(".number").onkeyup = onlyDigits
+            	
+		
+		//следующие строчки я скопипастил со stackoverflow и они не дают выбирать больше одного checkbox-а. Работает - не трогай
+            	var inputs = document.getElementsByName("coordX");
+            	for(var i = 0; i < inputs.length; i++) inputs[i].onchange = checkboxHandler;
          
-            function checkboxHandler(e) {
-                for(var i = 0; i < inputs.length; i++)
-                    if(inputs[i].checked && inputs[i] !== this) inputs[i].checked = false;
-            }
+            	function checkboxHandler(e) {
+                	for(var i = 0; i < inputs.length; i++)
+                    		if(inputs[i].checked && inputs[i] !== this) inputs[i].checked = false;
+            	}
 		</script>
 	</body>
 </html>
